@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eren Öymez — C++ & Graphics Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: #1e1e1e;
+    --text: #e8e8e8;
+    --muted: #b0b0b0;
+    --accent: #84c5f0;
+    --accent2: #42f5c8;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    cursor: crosshair;
+  }
+
+  ::selection { background: var(--accent); color: #000; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 2px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    gap: 4px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    font-family: var(--sans);
+    font-size: clamp(100px, 18vw, 280px);
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px #1a1a1a;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: var(--sans);
+    font-size: clamp(42px, 7vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero-desc {
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--muted);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    right: 48px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-text h2 {
+    font-family: var(--sans);
+    font-size: clamp(28px, 3vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+
+  .about-text p strong { color: var(--text); }
+
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-row:first-child { border-top: 1px solid var(--border); }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stat-value {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 2px;
+  }
+
+  .skill-item {
+    background: var(--surface);
+    padding: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  .skill-item:hover::before { width: 100%; }
+  .skill-item:hover { color: var(--text); border-color: #333; }
+
+  /* PROJECTS */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .project-item {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 32px;
+    align-items: start;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-item:first-child { border-top: 1px solid var(--border); }
+
+  .project-item:hover .project-title { color: var(--accent); }
+  .project-item:hover .project-arrow { transform: translate(4px, -4px); color: var(--accent); }
+
+  .project-num {
+    font-size: 11px;
+    color: var(--muted);
+    padding-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .project-title {
+    font-family: var(--sans);
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    max-width: 600px;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .project-links a {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    padding: 4px 12px;
+    transition: all 0.25s;
+  }
+
+  .project-links a:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+  }
+
+  .project-arrow {
+    font-size: 20px;
+    color: var(--muted);
+    transition: all 0.25s;
+    padding-top: 4px;
+  }
+
+  /* EXPERIENCE */
+  .exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+
+  .exp-period {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    padding-top: 4px;
+  }
+
+  .exp-company {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+
+  .exp-role {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .exp-desc {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .contact-heading {
+    font-family: var(--sans);
+    font-size: clamp(36px, 6vw, 80px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .contact-heading .accent { color: var(--accent); }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .contact-link {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .contact-link:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag { animation: fadeUp 0.6s ease 0.1s both; }
+  .hero h1 { animation: fadeUp 0.6s ease 0.2s both; }
+  .hero-desc { animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-cta { animation: fadeUp 0.6s ease 0.4s both; }
+
+  /* HIDDEN by lang */
+  [data-lang] { display: none; }
+  [data-lang-inline] { display: none; }
+  .lang-en [data-lang="en"] { display: block; }
+  .lang-tr [data-lang="tr"] { display: block; }
+  .lang-en [data-lang-inline="en"] { display: inline; }
+  .lang-tr [data-lang-inline="tr"] { display: inline; }
+
+  .flex-lang [data-lang="en"],
+  .flex-lang [data-lang="tr"] { display: none; }
+  .lang-en .flex-lang [data-lang="en"] { display: flex; }
+  .lang-tr .flex-lang [data-lang="tr"] { display: flex; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 24px 60px; }
+    section { padding: 80px 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .project-item { grid-template-columns: 32px 1fr auto; gap: 16px; }
+    .contact-inner { flex-direction: column; align-items: flex-start; }
+    .contact-links { align-items: flex-start; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+    .scroll-hint { display: none; }
+  }
+</style>
+</head>
+<body class="lang-en">
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">EÖ</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about"><span data-lang-inline="en">About</span><span data-lang-inline="tr">Hakkımda</span></a></li>
+      <li><a href="#projects"><span data-lang-inline="en">Projects</span><span data-lang-inline="tr">Projeler</span></a></li>
+      <li><a href="#experience"><span data-lang-inline="en">Experience</span><span data-lang-inline="tr">Deneyim</span></a></li>
+      <li><a href="#contact"><span data-lang-inline="en">Contact</span><span data-lang-inline="tr">İletişim</span></a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('tr')">TR</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">C++</div>
+  <div class="hero-tag">
+    <span data-lang="en">Graphics & Engine Developer</span>
+    <span data-lang="tr">Grafik & Motor Geliştiricisi</span>
+  </div>
+  <h1>
+    Eren<br><span class="accent">Öymez</span>
+  </h1>
+  <p class="hero-desc">
+    <span data-lang="en">Mathematics graduate building low-level graphics systems and game engines in C++. Passionate about the intersection of math, physics simulation, and real-time rendering.</span>
+    <span data-lang="tr">C++ ile düşük seviyeli grafik sistemleri ve oyun motorları geliştiren matematik mezunu. Matematik, fizik simülasyonu ve gerçek zamanlı rendering tutkunu.</span>
+  </p>
+  <div class="hero-cta flex-lang">
+    <div data-lang="en">
+      <a href="#projects" class="btn btn-primary">View Projects →</a>
+      <a href="mailto:erenhalil2010@hotmail.com" class="btn btn-ghost">Get in Touch</a>
+    </div>
+    <div data-lang="tr">
+      <a href="#projects" class="btn btn-primary">Projeleri Gör →</a>
+      <a href="mailto:erenhalil2010@hotmail.com" class="btn btn-ghost">İletişime Geç</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span data-lang="en">Scroll</span>
+    <span data-lang="tr">Kaydır</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">
+    <span data-lang="en">About</span>
+    <span data-lang="tr">Hakkımda</span>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>
+        <span data-lang="en">Math-first, systems-minded developer</span>
+        <span data-lang="tr">Matematik odaklı, sistem düşünceli geliştirici</span>
+      </h2>
+      <p>
+        <span data-lang="en"><strong>Mathematics graduate</strong> (2022–2023 year's valedictorian) with a deep interest in the academic and engineering foundations that power games — physics simulation, graphics programming, and engine architecture.</span>
+        <span data-lang="tr"><strong>Matematik mezunu</strong> (2022–2023 yılı bölüm birincisi) olarak oyunları destekleyen akademik ve mühendislik temellere — fizik simülasyonu, grafik programlama ve motor mimarisine — derin ilgi duyuyorum.</span>
+      </p>
+      <p>
+        <span data-lang="en">I want to grow within the <strong>C++ ecosystem</strong>, working short-term as a game or R&D engineer, and long-term as a game engine developer.</span>
+        <span data-lang="tr"><strong>C++ ekosisteminde</strong> büyümek istiyorum; kısa vadede oyun geliştiricisi veya AR-GE mühendisi, uzun vadede ise oyun motoru geliştirici olarak çalışmayı hedefliyorum.</span>
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-row">
+        <span class="stat-label">
+          <span data-lang="en">University</span>
+          <span data-lang="tr">Üniversite</span>
+        </span>
+        <span class="stat-value">TED Üniversitesi</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">GPA</span>
+        <span class="stat-value">3.07</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">
+          <span data-lang="en">Location</span>
+          <span data-lang="tr">Konum</span>
+        </span>
+        <span class="stat-value">Ankara</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div style="margin-top: 80px;">
+    <div class="section-label">
+      <span data-lang="en">Tech Stack</span>
+      <span data-lang="tr">Teknolojiler</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-item">C++20</div>
+      <div class="skill-item">OpenGL</div>
+      <div class="skill-item">WebGPU</div>
+      <div class="skill-item">SFML</div>
+      <div class="skill-item">GLFW / GLM</div>
+      <div class="skill-item">Lua / Sol2</div>
+      <div class="skill-item">CMake</div>
+      <div class="skill-item">WGSL / GLSL</div>
+      <div class="skill-item">ImGui</div>
+      <div class="skill-item">Physics Sim.</div>
+      <div class="skill-item">Ray Marching</div>
+      <div class="skill-item">ECS</div>
+      <div class="skill-item">C#</div>
+      <div class="skill-item">SQL</div>
+      <div class="skill-item">Linux</div>
+      <div class="skill-item">Git</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">
+    <span data-lang="en">Selected Projects</span>
+    <span data-lang="tr">Projeler</span>
+  </div>
+  <div class="projects-list">
+
+    <!-- WillEngine -->
+    <div class="project-item">
+      <span class="project-num">01</span>
+      <div>
+        <div class="project-title">WillEngine</div>
+        <div class="project-desc">
+          <div data-lang="en">
+            <ul>
+              <li>Developed a modular 2D game engine integrating WebGPU, Lua scripting, ImGui editor, and SoLoud audio system.</li>
+              <li>Designed a sparse-set-based Entity Component System (ECS) implementation, extensible to support Transform, Rigidbody, Sprite, BoxCollider, Health, and Script components.</li>
+              <li>Built a script system where each entity runs in an isolated Lua environment, using the Sol2 library for the C++/Lua bridge.</li>
+              <li>Developed an ImGui-based editor with Play/Pause/Stop control, scene snapshot/restore, and real-time component editing.</li>
+              <li>Automated dependency management (GLFW, GLM, SoLoud, Sol2, stb) via CMake FetchContent.</li>
+            </ul>
+          </div>
+          <div data-lang="tr">
+            <ul>
+              <li>WebGPU, Lua scripting, ImGui editor ve SoLoud ses sistemi entegre eden, modüler mimarili bir 2D oyun motoru geliştirdim.</li>
+              <li>Sparse-set tabanlı Entity Component System (ECS) implementasyonu tasarladım; Transform, Rigidbody, Sprite, BoxCollider, Health ve Script bileşenlerini destekleyecek şekilde genişletilebilir hale getirdim.</li>
+              <li>Her entity'nin izole Lua ortamında çalıştığı bir script sistemi kurdum ve C++/Lua köprüsü için Sol2 kütüphanesini kullandım.</li>
+              <li>Play/Pause/Stop kontrolü, sahne snapshot/restore sistemi ve gerçek zamanlı component düzenleme özellikleri sunan ImGui tabanlı bir editör geliştirdim.</li>
+              <li>CMake ile bağımlılık yönetimini (GLFW, GLM, SoLoud, Sol2, stb) FetchContent üzerinden otomatikleştirdim.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">C++20</span>
+          <span class="tag">WebGPU</span>
+          <span class="tag">Lua</span>
+          <span class="tag">ImGui</span>
+          <span class="tag">ECS</span>
+          <span class="tag">CMake</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/derkkek/willengine" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+
+    <!-- GTA Mods -->
+    <div class="project-item">
+      <span class="project-num">05</span>
+      <div>
+        <div class="project-title">GTA V Mods</div>
+        <div class="project-desc">
+          <div data-lang="en">
+            <ul>
+              <li>Developed a trainer menu using a script hook code injector library and C# for GTA 5, allowing users to interact with game functions within legal boundaries, reaching 3,200+ downloads.</li>
+              <li>Through this trainer, users could modify vehicle properties such as horsepower, torque, top speed, weight, and traction during gameplay, as well as stop traffic, drift, spawn vehicles, and fly.</li>
+              <li>Wrote a cel-shading shader for the ReShade post-process shader injector within legal boundaries, reaching 370+ downloads.</li>
+              <li>Contributed a new effect script to the open-source Chaos Mod project for GTA 5, which is globally recognized and played by Twitch streamers worldwide.</li>
+            </ul>
+          </div>
+          <div data-lang="tr">
+            <ul>
+              <li>GTA 5 oyunu için geliştirilmiş bir script hook kod enjektörü kütüphanesini ve C# dilini kullanarak yasal sınırlar dahilinde kullanıcıların oyunun fonksiyonlarıyla etkileşime geçebilecekleri bir trainer menüsü geliştirdim ve 3.200+ indirme sayısına ulaştım.</li>
+              <li>Bu trainer sayesinde kullanıcılar, oyun esnasında kullandıkları arabaların beygir, tork, en yüksek hız, ağırlık, yol tutuşu gibi özelliklerini değiştirip trafiği durdurabildiler, drift yapabilmek ve araba çağırmak ve uçmak gibi birçok farklı özelliğe ulaşabildiler.</li>
+              <li>ReShade post process shader enjektörü için yasal sınırlar dahilinde bir cel shading shaderı yazdım ve 370+ indirme sayısına ulaştım.</li>
+              <li>Ayrıca yine GTA 5 için geliştirilmiş ve dünya çapında tanınan Twitch yayıncıları tarafından oynanan açık kaynak Chaos Mod projesine yeni bir efekt scripti yazarak katkıda bulundum.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">C#</span>
+          <span class="tag">GLSL</span>
+          <span class="tag">ReShade</span>
+          <span class="tag">Open Source</span>
+        </div>
+        <div class="project-links">
+          <a href="https://youtu.be/FlPk_SI6Xw0" target="_blank">YouTube</a>
+          <a href="https://www.gta5-mods.com/scripts/carbrokertrainer" target="_blank">Trainer</a>
+          <a href="https://www.gta5-mods.com/misc/cel-shader-effect" target="_blank">Cel Shader</a>
+          <a href="https://github.com/gta-chaos-mod/ChaosModV" target="_blank">Chaos Mod</a>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+
+    <!-- OpenGL Particle Sim -->
+    <div class="project-item">
+      <span class="project-num">02</span>
+      <div>
+        <div class="project-title">
+          <span data-lang="en">OpenGL Particle Collision Sim</span>
+          <span data-lang="tr">OpenGL Parçacık Çarpışma Simülasyonu</span>
+        </div>
+        <div class="project-desc">
+          <div data-lang="en">
+            <ul>
+              <li>Developed a particle simulation in C++ and OpenGL with custom-implemented collision detection and response algorithms.</li>
+              <li>Optimized simulation speed to 58 FPS for 200,000 particles with 17ms latency using uniform grid data structure and multithreading.</li>
+              <li>Applied instanced rendering technique to eliminate the bottleneck of 200,000 draw calls, rendering all particles in a single draw call per frame.</li>
+              <li>Organized the program into modules (physics engine, renderer) and structured the architecture using OOP principles for maintainability.</li>
+              <li>Achieved 38,000+ views and 97% upvote rate on r/Simulated and r/GraphicsProgramming.</li>
+              <li>Additionally simulated gravity and space curvature in 3D space during the development process.</li>
+            </ul>
+          </div>
+          <div data-lang="tr">
+            <ul>
+              <li>C++ dilini ve OpenGL kütüphanesini kullanarak çarpışma algılama ve cevap algoritmalarını kendim implement ettiğim bir parçacık simülasyonu geliştirdim.</li>
+              <li>Uniform grid veri yapısını ve multithreading teknolojisini kullanarak simülasyonumun hızını 200.000 parçacık için 58 FPS'e kadar arttırdım ve 17ms gecikme süresine kadar düşürdüm.</li>
+              <li>Ekran kartımla işlemcim arasındaki iletişimi hızlandırmak ve 200.000 render draw çağrısının yarattığı dar boğaz problemini çözmek için instanced rendering tekniğini kullandım ve tek draw çağrısıyla 200.000 parçacığı her bir frame için renderladım.</li>
+              <li>Programımı fizik motoru, renderer gibi modüllere ayırdım ve OOP yaklaşımlarını kullanarak mimarisini yönetilebilir hale getirdim.</li>
+              <li>Programım r/Simulated ve r/GraphicsProgramming platformlarında 38.000'den fazla izleyiciye ve %97 upvote oranına ulaştı.</li>
+              <li>Programımı geliştirme sürecinde yer çekimi ve uzayın bükülmesini de 3 boyutlu düzlemde ayrıca simüle ettim.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">C++</span>
+          <span class="tag">OpenGL</span>
+          <span class="tag">Multithreading</span>
+          <span class="tag">Instanced Rendering</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/derkkek/LearnOpenGL_2" target="_blank">GitHub</a>
+          <a href="https://www.reddit.com/r/Simulated/comments/1ljkvyp/200000_particles_colliding_with_each_other_175ms/" target="_blank">Reddit</a>
+          <a href="https://youtu.be/vmiR63vNQu0?si=NpoQH8r9FKGpnX5n" target="_blank">YouTube</a>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+
+    <!-- Cloth Sim -->
+    <div class="project-item">
+      <span class="project-num">03</span>
+      <div>
+        <div class="project-title">
+          <span data-lang="en">2D Cloth Simulation & Editor</span>
+          <span data-lang="tr">2D Kumaş Simülasyonu & Editörü</span>
+        </div>
+        <div class="project-desc">
+          <div data-lang="en">
+            <ul>
+              <li>Developed an interactive 2D cloth simulation using C++ and the SFML library.</li>
+              <li>Implemented a particle-based physics engine using Verlet integration for realistic cloth dynamics.</li>
+              <li>Designed and implemented data structures (Graph) for particles, constraints (lines), and area-preserving triangles to simulate cloth behavior.</li>
+              <li>Developed user interaction features enabling real-time addition, connection, and interactive modification of particles and constraints.</li>
+              <li>Built a modular architecture with editor interaction, render system, and event handling structures.</li>
+              <li>Added simulation scene save/load functionality using JSON.</li>
+              <li>Emphasized code quality, memory management, and extensibility for future development with an object-oriented abstraction design.</li>
+            </ul>
+          </div>
+          <div data-lang="tr">
+            <ul>
+              <li>C++ dilini ve SFML kütüphanesini kullanarak etkileşimli 2D kumaş simülasyonu geliştirdim.</li>
+              <li>Gerçekçi kumaş dinamikleri için Verlet integrali kullanan parçacık tabanlı bir fizik motoru uyguladım.</li>
+              <li>Kumaş davranışını simüle etmek amacıyla parçacıklar, kısıtlamalar (çizgiler) ve alan koruyan üçgenler için veri yapılarını (Graph) tasarladım ve uyguladım.</li>
+              <li>Gerçek zamanlı olarak parçacık ve kısıtlamaların eklenmesi, bağlanması ve etkileşimli olarak değiştirilmesini sağlayan kullanıcı etkileşimi özellikleri geliştirdim.</li>
+              <li>Editör etkileşimi, render sistemi ve olay işleme yapıları ile modüler bir mimari kurdum.</li>
+              <li>JSON kullanarak simülasyon sahnelerini kaydetme/yükleme özelliklerini ekledim.</li>
+              <li>Kod kalitesine, bellek yönetimine ve gelecekteki geliştirmeler için genişletilebilirliğe önem verdim ve obje temelli soyutlamaya önem verdiğim bir dizayn geliştirdim.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">C++</span>
+          <span class="tag">SFML</span>
+          <span class="tag">Verlet Integration</span>
+          <span class="tag">Graph</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/derkkek/ClothSim" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+
+    <!-- Ray Marching -->
+    <div class="project-item">
+      <span class="project-num">04</span>
+      <div>
+        <div class="project-title">
+          <span data-lang="en">Ray Marching Scenes</span>
+          <span data-lang="tr">Ray Marching Sahneleri</span>
+        </div>
+        <div class="project-desc">
+          <div data-lang="en">
+            <ul>
+              <li>Developed a project exploring ray marching technique mathematically using C++ and OpenGL.</li>
+              <li>Researched and experimented with what different numerical algorithms can simulate on GPUs, rendering scenes including infinite objects, noise sampling, shading, shadowing, pixelation, and 3D fractals.</li>
+              <li>Presented my researched and implemented scenes along with rendered visuals to fellow students and department academics.</li>
+            </ul>
+          </div>
+          <div data-lang="tr">
+            <ul>
+              <li>C++ dilini ve OpenGL kütüphanesini kullanarak ray marching tekniğini matematiksel olarak incelediğim bir proje geliştirdim.</li>
+              <li>Farklı türden numerik algoritmaların ekran kartlarında neleri simüle edebileceğini araştırdım, tecrübe ettim ve sonsuz objeler, noise sampling, shading, shadowing, pikselizasyon, 3D fraktallar gibi sahneleri renderladım.</li>
+              <li>Araştırmasını ve implementasyonunu yaptığım sahneleri renderlanmış görselleriyle beraber bölüm arkadaşlarıma ve bölüm akademisyenlerime sundum.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">C++</span>
+          <span class="tag">OpenGL</span>
+          <span class="tag">GLSL</span>
+          <span class="tag">Ray Marching</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/derkkek/RAYWorlds" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">
+    <span data-lang="en">Experience</span>
+    <span data-lang="tr">Deneyim</span>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-period">08/2025 — 10/2025</div>
+        <div class="exp-company">bradi.tech</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en">Fullstack Web Developer</span>
+          <span data-lang="tr">Fullstack Web Geliştiricisi</span>
+        </div>
+        <div class="exp-desc">
+          <span data-lang="en">Worked as a fullstack web developer in the Outfica project, contributing to the project's development using technologies like Nextjs, Tailwind CSS, TypeScript, Supabase, etc.</span>
+          <span data-lang="tr">Outfica adlı projede fullstack web geliştiricisi olarak çalıştım. Nextjs, Tailwind CSS, TypeScript, Supabase, gibi teknolojileri kullanarak projenin gelişimine katkıda bulundum.</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div>
+        <div class="exp-period">07/2023 — 03/2024</div>
+        <div class="exp-company">Reptilian Games</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en">Volunteer Game Developer</span>
+          <span data-lang="tr">Gönüllü Oyun Geliştirici</span>
+        </div>
+        <div class="exp-desc">
+          <span data-lang="en">Developed jump-scare events, designed a horror-themed map, created and implemented sound effects using FL Studio, and produced the game's official trailer.</span>
+          <span data-lang="tr">Ani korkutma olayları geliştirdim, korku temalı harita tasarladım, FL Studio ile ses efektleri oluşturdum ve oyunun resmi fragmanını tasarladım.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-period">06/2023 — 07/2023</div>
+        <div class="exp-company">Sunucupark IT</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en">Volunteer Intern</span>
+          <span data-lang="tr">Gönüllü Stajyer</span>
+        </div>
+        <div class="exp-desc">
+          <span data-lang="en">Set up a Linux server with a SQL database.</span>
+          <span data-lang="tr">Linux işletim sistemli bilgisayarda SQL veri tabanı kullanan bir sunucu kurdum.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">
+    <span data-lang="en">Let's Talk</span>
+    <span data-lang="tr">İletişim</span>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-heading">
+      <span data-lang="en">Get in<br><span class="accent">touch -></span></span>
+      <span data-lang="tr">İletişim<br><span class="accent">için -></span></span>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:erenhalil2010@hotmail.com" class="contact-link">
+        ✉ erenhalil2010@hotmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/eren-öymez-7218621b8/" target="_blank" class="contact-link">
+        ↗ LinkedIn
+      </a>
+      <a href="https://github.com/derkkek" target="_blank" class="contact-link">
+        ↗ GitHub
+      </a>
+      <a href="tel:+905372029449" class="contact-link">
+        ✆ +90 537 202 94 49
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Halil Eren Öymez</span>
+  <span>
+    <span data-lang="en">Ankara, Türkiye</span>
+    <span data-lang="tr">Ankara, Türkiye</span>
+  </span>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+  }
+</script>
+
+</body>
+</html>
