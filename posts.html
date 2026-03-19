@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Posts | Halil Eren Öymez</title>
+  <title>Posts | Eren Öymez</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 <div class="container">
+
   <div class="header">
-    <h3 class="header-title">
-      <a href="index.html">Halil Eren Öymez</a>
-      <small class="header-subtitle"> C++ Graphics &amp; Physics Programmer</small>
-    </h3>
+    <div class="header-title">
+      <a href="index.html">Eren Öymez</a>
+      <span class="header-subtitle"> &mdash; C++ Graphics &amp; Physics Programmer</span>
+    </div>
     <div class="menu">
       <nav class="menu-content">
         <a href="posts.html" class="active">Posts</a>
@@ -28,31 +29,32 @@
       </nav>
     </div>
   </div>
+
   <div class="content-container">
     <h1 class="page-title">Posts</h1>
 
-    <div class="posts-container">
+    <div class="post-entry">
       <h1><a href="#">Building a Sparse-Set ECS from Scratch</a></h1>
       <p>Architecture decisions behind WillEngine's ECS — why sparse sets, how component iteration maps to cache lines, and where archetypes fall short. <a class="read-more" href="#">Read more</a></p>
-      <span class="post-date">Coming soon &mdash; ~15 min read</span>
+      <div class="post-meta">Coming soon &middot; ~15 min read</div>
     </div>
 
-    <div class="posts-container">
+    <div class="post-entry">
       <h1><a href="#">SAT Collision Detection: From Math to C++</a></h1>
       <p>Implementing the Separating Axis Theorem for convex polygon collision — the subtle bugs in edge normals, winding order, and contact point generation. <a class="read-more" href="#">Read more</a></p>
-      <span class="post-date">Coming soon &mdash; ~10 min read</span>
+      <div class="post-meta">Coming soon &middot; ~10 min read</div>
     </div>
 
-    <div class="posts-container">
+    <div class="post-entry">
       <h1><a href="#">200K Particles in Real Time</a></h1>
       <p>A weekend OpenGL experiment handling 200,000 colliding particles at 58 FPS — and what I learned about GPU bottlenecks along the way. <a class="read-more" href="#">Read more</a></p>
-      <span class="post-date">Coming soon &mdash; ~8 min read</span>
+      <div class="post-meta">Coming soon &middot; ~8 min read</div>
     </div>
 
-    <div class="posts-container">
+    <div class="post-entry">
       <h1><a href="#">Why Constraint Solvers Beat Force Resolvers</a></h1>
       <p>Switching my physics engine from explicit force resolution to sequential impulse — the numerical stability wins and the tradeoffs. <a class="read-more" href="#">Read more</a></p>
-      <span class="post-date">Coming soon &mdash; ~12 min read</span>
+      <div class="post-meta">Coming soon &middot; ~12 min read</div>
     </div>
   </div>
 
@@ -63,8 +65,9 @@
       <a href="mailto:eren@example.com"><i class="fa-solid fa-envelope"></i></a>
       <a href="https://youtube.com/" target="_blank"><i class="fa-brands fa-youtube"></i></a>
     </div>
-    <div><a href="index.html">&copy; 2024&ndash;2025 Halil Eren Öymez</a></div>
+    <div class="footer-copy"><a href="index.html">&copy; 2024&ndash;2025 Eren Öymez</a></div>
   </footer>
+
 </div>
 </body>
 </html>

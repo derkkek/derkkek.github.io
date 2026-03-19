@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | Halil Eren Öymez</title>
+  <title>Projects | Eren Öymez</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 <div class="container">
+
   <div class="header">
-    <h3 class="header-title">
-      <a href="index.html">Halil Eren Öymez</a>
-      <small class="header-subtitle"> C++ Graphics &amp; Physics Programmer</small>
-    </h3>
+    <div class="header-title">
+      <a href="index.html">Eren Öymez</a>
+      <span class="header-subtitle"> &mdash; C++ Graphics &amp; Physics Programmer</span>
+    </div>
     <div class="menu">
       <nav class="menu-content">
         <a href="posts.html">Posts</a>
@@ -28,25 +29,26 @@
       </nav>
     </div>
   </div>
+
   <div class="content-container">
     <h1 class="page-title">Projects</h1>
-    <p style="margin-bottom:2.5rem;text-align:center;">Here you can find my engine, simulation, and graphics projects.</p>
+    <p style="text-align:center;color:#888;font-family:var(--sans);font-size:0.9rem;margin-bottom:2.5rem;">Engine, simulation, and graphics work.</p>
 
     <div class="project-block">
-      <h3 id="willengine"><a href="https://github.com/derkkek/willengine" target="_blank">WillEngine &mdash; 2D Game Engine</a></h3>
+      <h3><a href="https://github.com/derkkek/willengine" target="_blank">WillEngine &mdash; 2D Game Engine</a></h3>
       <ul>
         <li>Developed a modular 2D game engine integrating WebGPU, Lua scripting, ImGui editor, and SoLoud audio system.</li>
         <li>Designed a sparse-set-based Entity Component System (ECS), extensible to support Transform, Rigidbody, Sprite, BoxCollider, Health, and Script components.</li>
-        <li>Built a script system where each entity runs in an isolated Lua environment, using the Sol2 library for the C++/Lua bridge.</li>
+        <li>Built a script system where each entity runs in an isolated Lua environment, using Sol2 for the C++/Lua bridge.</li>
         <li>Developed an event handling system using the Publish-Subscribe design pattern.</li>
         <li>Developed an ImGui-based editor with Play/Pause/Stop control, scene snapshot/restore, and real-time component editing.</li>
         <li>Automated dependency management (GLFW, GLM, SoLoud, Sol2, stb) via CMake FetchContent.</li>
       </ul>
-      <div class="project-tags" style="margin-top:0.75rem;">
+      <div class="project-tags">
         <span class="tag">C++20</span><span class="tag">WebGPU</span><span class="tag">Lua</span>
         <span class="tag">ImGui</span><span class="tag">ECS</span><span class="tag">CMake</span>
       </div>
-      <div class="project-links" style="margin-top:0.6rem;">
+      <div class="project-links">
         <a href="https://github.com/derkkek/willengine" target="_blank">GitHub</a>
       </div>
     </div>
@@ -54,16 +56,16 @@
     <hr>
 
     <div class="project-block">
-      <h3 id="gta"><a href="https://youtu.be/FlPk_SI6Xw0" target="_blank">GTA V Mods</a></h3>
+      <h3><a href="https://youtu.be/FlPk_SI6Xw0" target="_blank">GTA V Mods</a></h3>
       <ul>
-        <li>Developed a trainer menu using a script hook code injector library and C# for GTA 5, allowing users to modify vehicle horsepower, torque, top speed, weight, and traction — reaching 3,200+ downloads.</li>
-        <li>Wrote a cel-shading shader for the ReShade post-process shader injector, reaching 370+ downloads.</li>
-        <li>Contributed a new effect script to the open-source Chaos Mod project for GTA 5, played by Twitch streamers worldwide.</li>
+        <li>Developed a trainer menu in C# using a script hook injector for GTA 5, letting users modify vehicle horsepower, torque, top speed, weight, and traction &mdash; 3,200+ downloads.</li>
+        <li>Wrote a cel-shading shader for the ReShade post-process injector &mdash; 370+ downloads.</li>
+        <li>Contributed a new effect script to the open-source Chaos Mod project, played by Twitch streamers worldwide.</li>
       </ul>
-      <div class="project-tags" style="margin-top:0.75rem;">
+      <div class="project-tags">
         <span class="tag">C#</span><span class="tag">GLSL</span><span class="tag">ReShade</span><span class="tag">Open Source</span>
       </div>
-      <div class="project-links" style="margin-top:0.6rem;">
+      <div class="project-links">
         <a href="https://youtu.be/FlPk_SI6Xw0" target="_blank">YouTube</a>
         <a href="https://www.gta5-mods.com/scripts/carbrokertrainer" target="_blank">Trainer</a>
         <a href="https://www.gta5-mods.com/misc/cel-shader-effect" target="_blank">Cel Shader</a>
@@ -74,18 +76,18 @@
     <hr>
 
     <div class="project-block">
-      <h3 id="particles"><a href="https://github.com/derkkek/LearnOpenGL_2" target="_blank">OpenGL Particle Collision Simulation</a></h3>
+      <h3><a href="https://github.com/derkkek/LearnOpenGL_2" target="_blank">OpenGL Particle Collision Simulation</a></h3>
       <ul>
         <li>Developed a particle simulation in C++ and OpenGL with custom collision detection and response algorithms.</li>
-        <li>Optimized to 58 FPS for 200,000 particles with 17ms latency using a uniform grid data structure and multithreading.</li>
-        <li>Applied instanced rendering to eliminate 200,000 draw calls — rendering all particles in a single draw call per frame.</li>
+        <li>Optimized to 58 FPS for 200,000 particles at 17ms latency using a uniform grid and multithreading.</li>
+        <li>Applied instanced rendering to collapse 200,000 draw calls into one per frame.</li>
         <li>Achieved 38,000+ views and a 97% upvote rate on r/Simulated and r/GraphicsProgramming.</li>
-        <li>Additionally simulated gravity and space curvature in 3D space during development.</li>
+        <li>Additionally simulated gravity and space curvature in 3D during development.</li>
       </ul>
-      <div class="project-tags" style="margin-top:0.75rem;">
+      <div class="project-tags">
         <span class="tag">C++</span><span class="tag">OpenGL</span><span class="tag">Multithreading</span><span class="tag">Instanced Rendering</span>
       </div>
-      <div class="project-links" style="margin-top:0.6rem;">
+      <div class="project-links">
         <a href="https://github.com/derkkek/LearnOpenGL_2" target="_blank">GitHub</a>
         <a href="https://www.reddit.com/r/Simulated/comments/1ljkvyp/200000_particles_colliding_with_each_other_175ms/" target="_blank">Reddit</a>
         <a href="https://youtu.be/vmiR63vNQu0" target="_blank">YouTube</a>
@@ -95,18 +97,18 @@
     <hr>
 
     <div class="project-block">
-      <h3 id="cloth"><a href="https://github.com/derkkek/ClothSim" target="_blank">2D Cloth Simulation &amp; Editor</a></h3>
+      <h3><a href="https://github.com/derkkek/ClothSim" target="_blank">2D Cloth Simulation &amp; Editor</a></h3>
       <ul>
-        <li>Developed an interactive 2D cloth simulation using C++ and SFML.</li>
+        <li>Developed an interactive 2D cloth simulation in C++ and SFML.</li>
         <li>Implemented a particle-based physics engine using Verlet integration for realistic cloth dynamics.</li>
         <li>Designed data structures (Graph) for particles, constraints, and area-preserving triangles.</li>
         <li>Built real-time user interaction: add, connect, and modify particles and constraints live.</li>
-        <li>Added scene save/load functionality using JSON.</li>
+        <li>Added scene save/load via JSON.</li>
       </ul>
-      <div class="project-tags" style="margin-top:0.75rem;">
+      <div class="project-tags">
         <span class="tag">C++</span><span class="tag">SFML</span><span class="tag">Verlet Integration</span><span class="tag">Graph</span>
       </div>
-      <div class="project-links" style="margin-top:0.6rem;">
+      <div class="project-links">
         <a href="https://github.com/derkkek/ClothSim" target="_blank">GitHub</a>
       </div>
     </div>
@@ -114,16 +116,16 @@
     <hr>
 
     <div class="project-block">
-      <h3 id="raymarching"><a href="https://github.com/derkkek/RAYWorlds" target="_blank">Ray Marching Scenes</a></h3>
+      <h3><a href="https://github.com/derkkek/RAYWorlds" target="_blank">Ray Marching Scenes</a></h3>
       <ul>
-        <li>Developed a project exploring ray marching mathematically using C++ and OpenGL.</li>
-        <li>Rendered scenes including infinite objects, noise sampling, shading, shadowing, pixelation, and 3D fractals.</li>
-        <li>Presented rendered scenes with implementation details to fellow students and faculty as a mathematics thesis.</li>
+        <li>Explored ray marching mathematically using C++ and OpenGL.</li>
+        <li>Rendered scenes covering infinite objects, noise sampling, shading, shadowing, pixelation, and 3D fractals.</li>
+        <li>Presented implementations and renders to fellow students and faculty as a mathematics thesis.</li>
       </ul>
-      <div class="project-tags" style="margin-top:0.75rem;">
+      <div class="project-tags">
         <span class="tag">C++</span><span class="tag">OpenGL</span><span class="tag">GLSL</span><span class="tag">Ray Marching</span>
       </div>
-      <div class="project-links" style="margin-top:0.6rem;">
+      <div class="project-links">
         <a href="https://github.com/derkkek/RAYWorlds" target="_blank">GitHub</a>
       </div>
     </div>
@@ -137,8 +139,9 @@
       <a href="mailto:eren@example.com"><i class="fa-solid fa-envelope"></i></a>
       <a href="https://youtube.com/" target="_blank"><i class="fa-brands fa-youtube"></i></a>
     </div>
-    <div><a href="index.html">&copy; 2024&ndash;2025 Halil Eren Öymez</a></div>
+    <div class="footer-copy"><a href="index.html">&copy; 2024&ndash;2025 Eren Öymez</a></div>
   </footer>
+
 </div>
 </body>
 </html>
