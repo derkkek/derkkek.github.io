@@ -3,78 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eren Öymez | C++ Graphics & Physics Programmer</title>
+  <title>Halil Eren Öymez | C++ Graphics & Physics Programmer</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
-
-<header>
-  <div class="header-left">
-    <a class="site-title" href="index.html">Eren Öymez</a>
-    <span class="site-subtitle"> · C++ Graphics &amp; Physics Programmer</span>
+<div class="container">
+  <div class="header">
+    <h3 class="header-title">
+      <a href="index.html">Halil Eren Öymez</a>
+      <small class="header-subtitle"> C++ Graphics &amp; Physics Programmer</small>
+    </h3>
+    <div class="menu">
+      <nav class="menu-content">
+        <a href="posts.html">Posts</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+      </nav>
+      <nav class="social-icons">
+        <a href="https://github.com/derkkek" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com/in/" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="mailto:eren@example.com"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://youtube.com/" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      </nav>
+    </div>
   </div>
-  <nav>
-    <a href="posts.html">Posts</a>
-    <a href="projects.html">Projects</a>
-    <a href="about.html">About</a>
-  </nav>
-</header>
+  <div class="content-container">
 
-<main>
-  <div class="intro">
-    <p>
-      I write low-level systems in C++ — game engines, physics simulations, and GPU renderers.
-      My background is in mathematics (BSc, department valedictorian 2022–23) and I use it daily
-      when translating theory into fast, correct code.
-    </p>
-    <p>
-      Based in Ankara, Turkey. Looking for graphics or engine roles in Europe in 2026.
-      Code on <a href="https://github.com/derkkek">GitHub</a>.
-    </p>
+    <div class="posts-container">
+      <h1><a href="#">Building a Sparse-Set ECS from Scratch</a></h1>
+      <p>Architecture decisions behind WillEngine's ECS — why sparse sets, how component iteration maps to cache lines, and where archetypes fall short. <a class="read-more" href="#">Read more</a></p>
+      <span class="post-date">Coming soon &mdash; ~15 min read</span>
+    </div>
+
+    <div class="posts-container">
+      <h1><a href="#">SAT Collision Detection: From Math to C++</a></h1>
+      <p>Implementing the Separating Axis Theorem for convex polygon collision — subtle bugs in edge normals, winding order, and contact point generation. <a class="read-more" href="#">Read more</a></p>
+      <span class="post-date">Coming soon &mdash; ~10 min read</span>
+    </div>
+
+    <div class="posts-container">
+      <h1><a href="#">200K Particles in Real Time</a></h1>
+      <p>A weekend OpenGL experiment handling 200,000 colliding particles at 58 FPS — and what I learned about GPU bottlenecks along the way. <a class="read-more" href="#">Read more</a></p>
+      <span class="post-date">Coming soon &mdash; ~8 min read</span>
+    </div>
+
+    <div class="posts-container">
+      <h1><a href="#">Why Constraint Solvers Beat Force Resolvers</a></h1>
+      <p>Switching my physics engine from explicit force resolution to sequential impulse — numerical stability wins and the tradeoffs. <a class="read-more" href="#">Read more</a></p>
+      <span class="post-date">Coming soon &mdash; ~12 min read</span>
+    </div>
+
+    <div class="pagination">
+      <span class="pagination-button">Previous</span>
+      <span class="pagination-button">Next</span>
+    </div>
   </div>
 
-  <section>
-    <div class="section-label">Recent Posts</div>
-
-    <div class="card">
-      <h2><a href="#">Building a Sparse-Set ECS from Scratch</a></h2>
-      <div class="card-meta">Coming soon · ~15 min read</div>
-      <p>Architecture decisions behind WillEngine's ECS — why sparse sets, how component iteration maps to cache lines, and where archetypes fall short.</p>
-      <a class="read-more" href="#">Read more →</a>
+  <footer class="footer">
+    <div class="social-footer">
+      <a href="https://github.com/derkkek" target="_blank"><i class="fa-brands fa-github"></i></a>
+      <a href="https://linkedin.com/in/" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="mailto:eren@example.com"><i class="fa-solid fa-envelope"></i></a>
+      <a href="https://youtube.com/" target="_blank"><i class="fa-brands fa-youtube"></i></a>
     </div>
-
-    <div class="card">
-      <h2><a href="#">SAT Collision Detection: From Math to C++</a></h2>
-      <div class="card-meta">Coming soon · ~10 min read</div>
-      <p>Implementing the Separating Axis Theorem for convex polygon collision — the subtle bugs in edge normals, winding order, and contact point generation.</p>
-      <a class="read-more" href="#">Read more →</a>
-    </div>
-
-    <a href="posts.html" class="section-more">All posts →</a>
-  </section>
-
-  <section>
-    <div class="section-label">Featured Projects</div>
-
-    <div class="card">
-      <h2><a href="projects.html">WillEngine — 2D Game Engine</a></h2>
-      <div class="card-meta">C++20 · WebGPU · Lua · ImGui · ECS · CMake</div>
-      <p>A custom 2D game engine with a sparse-set ECS, WebGPU renderer, Lua scripting, an ImGui editor, and scene serialization.</p>
-    </div>
-
-    <div class="card">
-      <h2><a href="projects.html">OpenGL Particle Collision Simulation</a></h2>
-      <div class="card-meta">C++ · OpenGL · Multithreading · Instanced Rendering</div>
-      <p>200,000 colliding particles at 58 FPS. 38,000+ views on Reddit with a 97% upvote rate.</p>
-    </div>
-
-    <a href="projects.html" class="section-more">All projects →</a>
-  </section>
-</main>
-
-<footer>
-  <a href="index.html">© 2024–2025 Eren Öymez</a>
-</footer>
-
+    <div><a href="index.html">&copy; 2024&ndash;2025 Halil Eren Öymez</a></div>
+  </footer>
+</div>
 </body>
 </html>
