@@ -177,6 +177,8 @@ So yeah that's enough renderer performance for my case after all, I'm not going 
 
 So i successfully decoupled the subsystems so that in future if want to i can change my renderer or create demos in different graphics libraries or i can distribute my physics engine as a static library easily. These were my initial working progress from this point i will upload my logs daily because i decided to keep a devlog after some progress. 
 
+One last thing before the close-up today, i decided to keep bodies aa stack allocated in bodies vector of the world to make them cache friendly and  
+
 #### You can check the initial state of the project [from here](https://github.com/derkkek/Cacti3D/archive/refs/tags/v0.1.0.zip)
 
 One important notice, after you compile the code copy and paste the resources folder to the out/build/Debug(or release) so the same folder with our exe otherwise it couldn't be able to find shaders and textures.
@@ -185,3 +187,13 @@ One important notice, after you compile the code copy and paste the resources fo
 
 # Day 1
 
+I moved from raw shape pointers to unique pointers in bodies to solve ownership confusion. This required more changes in the codebase for example now body initalization list moves shape pointer to the bodie's shape member variable because unique pointers doesn't allow copying so ownership of the pointer of the initialized shape is moves to the body. 
+
+```c#
+	Body::Body(std::unique_ptr<Shape> shape, Vec3 position)
+		:position(position), orientation(Quat(0,0,0,1)), shape(std::move(shape))
+	{
+	}
+```
+
+Also BuildRenderModelFromPhysicsGeometry function takes body as reference now because unique pointer doesn't allow to copy body to a function either and to pass raw pointer as a second argument i had to use get() function, 
