@@ -178,11 +178,8 @@ main {
 }
 
 /* pre , code */
-.content,
-.content div,
-.content div pre,
-.content div pre code {
-  overflow-x: auto !important;
+.content div pre {
+  overflow-x: auto;
 }
 
 .content pre {
@@ -257,4 +254,21 @@ main {
   body {
     padding: 1.5rem;
   }
+}
+.content div.highlighter-rouge {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.content div.highlighter-rouge pre {
+  padding: 1rem 2rem;
+  margin-bottom: 1.75rem;
+}
+.content div.highlighter-rouge {
+  width: min(100vw, 1000px);
+
 }
