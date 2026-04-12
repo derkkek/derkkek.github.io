@@ -197,3 +197,30 @@ I moved from raw shape pointers to unique pointers in bodies to solve ownership 
 ```
 
 Also BuildRenderModelFromPhysicsGeometry function takes body as reference now because unique pointer doesn't allow to copy body to a function either and to pass raw pointer as a second argument i had to use get() function, 
+
+# Day 2
+
+I did some system description. Because of my previous experiments i knew my system of the engine should be look like the following
+
+>“Every frame the engine takes a list of objects in the world, applies impulses(gravity, drag, etc.), checks if any of them are touching or overlapping, resolves those contacts by applying contact impulses then updates their positions and rotations for the next frame.”
+
+#### Nouns
+
+Engine, object, world, impulse, intersection, contact,
+
+#### Verbs
+
+Resolve, update
+
+Implemented sphere-sphere intersection test, studied why some engines populate contact points as local space some as world space and learned that when you store contact points in world space it causes floating point drifting and can be error-prone in continous collision detection because objects' position changes constantly and contact world points became stale and need to being re-calculated in the each frame and impulse solvers re-uses the same contact points so keeping contact in world space makes the calculations stable.
+
+In the other hand keeping world space contact points is beneficial for user/ game code because user can play sounds, create particles and etc. at the world points.
+
+>Erwin Coumans (Bullet’s author) explicitly described it this way in the Bullet forums: keep contacts in local space, transform to world each frame only to validate them.
+
+In summary 
+- World space → simpler, fine for non-persistent one-shot solvers
+
+- Local space → necessary for persistent manifolds, warm starting, and stable stacking behavior
+
+I'm sticking with the local space caching.
