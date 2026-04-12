@@ -212,7 +212,7 @@ Engine, object, world, impulse, intersection, contact,
 
 Resolve, update
 
-Implemented sphere-sphere intersection test, studied why some engines populate contact points as local space some as world space and learned that when you store contact points in world space it causes floating point drifting and can be error-prone in continous collision detection because objects' position changes constantly and contact world points became stale and need to being re-calculated in the each frame and impulse solvers re-uses the same contact points so keeping contact in world space makes the calculations stable.
+Implemented sphere-sphere intersection test, studied why some engines populate contact points as local space some as world space and learned that when you store contact points in world space it causes floating point drifting and can be error-prone because objects' position changes constantly and contact world points became stale and need to being re-calculated in the each frame and impulse solvers re-uses the same contact points so keeping contact in world space makes the calculations stable.
 
 In the other hand keeping world space contact points is beneficial for user/ game code because user can play sounds, create particles and etc. at the world points.
 
