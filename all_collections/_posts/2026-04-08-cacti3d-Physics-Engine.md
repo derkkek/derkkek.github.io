@@ -224,3 +224,29 @@ In summary
 - Local space → necessary for persistent manifolds, warm starting, and stable stacking behavior
 
 I'm sticking with the local space caching.
+
+# Day 3
+
+I studied world space to local space vector conversion and implemented the classic conversion which benefits from quaternions.
+
+Basically i translate the coordinate space by substracting body's position from the vector's world position (remember graph translations from high school) then i create a new quaternion and filling the x, y, z members by using the coordinates of the translated vector and then i apply quaternion rotation to it.
+
+$$
+\mathbf{v'} = q \, (0, \mathbf{v}) \, q^{-1}
+$$
+
+where $q$ is a rotation quaternion $v$ is a vector we need to convert from world space to local space and $q^{-1}$ is the inverse of the rotation quaternion.
+
+Finally $\mathbf{v'}$ is the translated local point of a body from the world space. 
+
+Here's the debug visualizations of a contact:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ioYZyehQO3Q?si=ndeJ773AJFGPzQYH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 4
+
+I studied momentum and impulse relationship, mainly to understand their role in collision resolution. Momentum and impulses bridge mass and velocity relationship, this saves us from a "velocity guess" of collided objects and tells velocities of collided objects with respect to their massess. 
+
+Also i tried to answer why don’t we just calculate a collision force and apply it to the objects? If we do this, we would need to integrate the force over time to update the velocity, which is computationally expensive and can introduce instabilities, especially over very short collision durations. Impulses, on the other hand, model collisions as instantaneous changes in velocity, making them more suitable for discrete, step-by-step simulations on a CPU.
+
+Furthermore read [Lisitsa Nikita's great blog post about quaternions](https://lisyarus.github.io/blog/posts/introduction-to-quaternions.html) to learn and implement my quaternion class, it's one of the best resources on this topic, he doesn't just provide the formulas; he explains their mathematical basis. Great for those who are curious about the why.

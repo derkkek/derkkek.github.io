@@ -19,7 +19,9 @@ This page demonstrates how to use math expressions in Markdown.
 
 The quadratic formula:
 
-$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+$$
+\mathbf{v'} = q \, (0, \mathbf{v}) \, q^{-1}
+$$
 
 Maxwell's Equations:
 
