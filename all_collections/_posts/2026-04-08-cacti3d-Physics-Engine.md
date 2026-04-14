@@ -5,11 +5,17 @@ date: 2026-04-08
 categories: [devlog, math, physics]
 ---
 
-In this blog post i will share my journey and engineering insights of creating a 3d physics engine. Since there are quite a few sources on this topic i hope this will be beneficial for you :).
+I am building a 3D physics engine from scratch in C++, with a focus on clean architecture and decoupled system design.
+
+A common issue in many physics engine tutorials is that they tightly couple the simulation with rendering. While this makes demos easier to build, it prevents the engine from being reusable or integrated into other projects.
+
+To avoid this, I started by designing the engine as a standalone static library, separating it completely from the rendering layer. This allows the physics system to be reused, tested, and extended independently.
+
+In this post, I’ll walk through the architectural decisions behind this approach and the development process of my 3D physics engine.
 
 # Starting Out
 
-I needed to decide what is a physics engine and what is not? The answer was easy but in the same way it wasn't because quite of the tutorials and sources don't mention decoupling like they mostly build engines and their demo in the same visual studio project guess what when you finish the tutorial you don't have an engine in your hand you got a project with lots of dependencies and coupling that cannot be seperated without building the engine from scratch again for your new game. So initially i spend some time on decoupling my engine and my "renderer" and i knew that my engine should be a static library why? Because that's a way that makes what's engine an engine, without it i don't know how to link it against another project or a game and i don't need to recompile the whole engine just for adding a printing statement to my demo.
+The first real design question I had to answer was: what separates a physics engine from a physics project? The distinction sounds obvious until you look at most tutorials — they build the engine and demo in the same Visual Studio project, and by the time you finish, you don't have an engine you can reuse. You have a tangle of dependencies that can't be separated without starting over. So before writing any physics code, I spent time thinking about decoupling. The engine would be a static library — that's what makes it actually distributable, linkable against another project, and independently compilable. No recompiling the whole engine just to add a debug print in the demo.
 
 # Renderer
 
