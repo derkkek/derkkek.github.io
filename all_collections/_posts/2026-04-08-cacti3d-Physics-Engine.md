@@ -15,7 +15,7 @@ In this post, I’ll walk through the architectural decisions behind this approa
 
 # Starting Out
 
-The first real design question I had to answer was: what separates a physics engine from a physics project? The distinction sounds obvious until you look at most tutorials — they build the engine and demo in the same Visual Studio project, and by the time you finish, you don't have an engine you can reuse. You have a tangle of dependencies that can't be separated without starting over. So before writing any physics code, I spent time thinking about decoupling. The engine would be a static library — that's what makes it actually distributable, linkable against another project, and independently compilable. No recompiling the whole engine just to add a debug print in the demo.
+The first real design question I had to answer was: what separates a physics engine from a software that uses that engine? The distinction sounds obvious until you look at most tutorials — they build the engine and demo in the same Visual Studio project, and by the time you finish, you don't have an engine you can reuse. You have a tangle of dependencies that can't be separated without starting over. So before writing any physics code, I spent time thinking about decoupling. The engine would be a static library — that's what makes it actually distributable, linkable against another project, and independently compilable. No recompiling the whole engine just to add a debug print in the demo.
 
 # Renderer
 
@@ -256,3 +256,24 @@ I studied momentum and impulse relationship, mainly to understand their role in 
 Also i tried to answer why don’t we just calculate a collision force and apply it to the objects? If we do this, we would need to integrate the force over time to update the velocity, which is computationally expensive and can introduce instabilities, especially over very short collision durations. Impulses, on the other hand, model collisions as instantaneous changes in velocity, making them more suitable for discrete, step-by-step simulations on a CPU.
 
 Furthermore read [Lisitsa Nikita's great blog post about quaternions](https://lisyarus.github.io/blog/posts/introduction-to-quaternions.html) to learn and implement my quaternion class, it's one of the best resources on this topic, he doesn't just provide the formulas; he explains their mathematical basis. Great for those who are curious about the why.
+
+# Day 5
+
+After some reading and a quaternion class implementation finally i managed to rotate my bodies. I don't discuss why do we use quaternions for representing our orientations in here again because there are tons of great explanations on the web.
+
+> But my insights are just don't be scared of it, the core ideas are; [Rotation vectors (axis-angle)](https://youtu.be/PMvIWws8WEo?si=aTiQotgGQmmr1g5l&t=1809) - actually in the end our angular velocity is our rotation axis and angle -, how quaternions encode angles and creating a new orientation quaternion in each frame and multiply it with the member one and then changed the member with it. That wasn't intuitive for me i guess because of i'm familiar with doing things in "OOPy" way that store object's state and manipule them inside in the object's encapsulated environment.
+
+```c#
+	void Body::Update(float dt)
+	{
+		float angle = angularVelocity.GetMagnitude() * dt;
+		Vec3 axis = angularVelocity.Normalized();
+		Quaternion deltaRotation(axis, angle);
+		orientation = deltaRotation * orientation; // this order works for world space rotations.
+		orientation.Normalize();
+	}
+```
+
+Here's the result!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ECo3num-SnI?si=Yy4KslHGqq_nHg3Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
