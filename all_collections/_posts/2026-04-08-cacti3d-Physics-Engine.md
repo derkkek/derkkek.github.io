@@ -277,3 +277,20 @@ After some reading and a quaternion class implementation finally i managed to ro
 Here's the result!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ECo3num-SnI?si=Yy4KslHGqq_nHg3Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 6
+
+I started to implementing collisin resolution. As like other engines my engine also response collisions in two steps;
+
+1. Collision detection.
+2. Collision Resolution.
+
+I populate contact structs in the detection step and solve them in resolution step as independently from the collision type (box - sphere or sphere-sphere, etc.)
+
+At first i just depenetrated collisions but i shocked how unstable it is and tried to find mathematical errors in the steps;
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HIghVLoAzoY?si=O3WXOfgE4aJCm4VN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+after few mins of debugging and flipping equations i realized that i don't clear forces from the bodies(i was applying gravity in each frame) at the frame end. After some time little sphere's velocity increase dramatically and causes the instability. So as a collision resolution i just divide it's velocity by two and this is my initial collision response and just for now i just gave little sphere initial velocity without applying gravity for the sake of simplicity;
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/u8L0CjYqKOc?si=eAjaBK2yHEO1pWCB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
