@@ -245,6 +245,8 @@ where $q$ is a rotation quaternion $v$ is a vector we need to convert from world
 
 Finally $\mathbf{v'}$ is the translated local point of a body from the world space. 
 
+Furthermore i implemented sphere-sphere collision test and visual debugging to check my coordinate transformations are correct.
+
 Here's the debug visualizations of a contact:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ioYZyehQO3Q?si=ndeJ773AJFGPzQYH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
