@@ -296,3 +296,24 @@ At first i just depenetrated collisions but i shocked how unstable it is and tri
 after few mins of debugging and flipping equations i realized that i don't clear forces from the bodies(i was applying gravity in each frame) at the frame end. After some time little sphere's velocity increase dramatically and causes the instability. So as a collision resolution i just divide it's velocity by two and this is my initial collision response and just for now i just gave little sphere initial velocity without applying gravity for the sake of simplicity;
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/u8L0CjYqKOc?si=eAjaBK2yHEO1pWCB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 7
+I studied linear collision resolution and implemented The Universal Impulse Formula
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bUrEDHzWaD4?si=G58yTC48KH_jfNqv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Great!?
+
+Turns out when i changed the constructor of bodies i didn't realize that i pass invMass = 0 to the little sphere. So in impulse calculation i was dividing by zero since big sphere is also has zero inverse mass.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Efkx76koO7k?si=itGtCcDlbt1szDP9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+What now??
+
+My vector class populates all of the 3 components of a vector by assigned float value and since i mistakenly try to assign dot product result (which is a float) to a vector it populates the same value to all of the vector components. So yeah little sphere additionally gains x and z velocity after collision even it's collides compeletely perpendicular to the ground. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/eZz3GPa4kbs?si=blXlSG1Nb1YSd1NY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Great view!!
+
+Finally i can solve linear collisions.
