@@ -317,3 +317,106 @@ My vector class populates all of the 3 components of a vector by assigned float 
 Great view!!
 
 Finally i can solve linear collisions.
+
+# Day 8
+
+When i tried to work on angular collision resolution i realized that i have major gaps in linear algebra and transformations in general so that i started to read relevant sections of 3D Math Primer For Graphics and Game Developers book and game physics in one weekend book, sure i could copy and paste code but i want to stick with the hard route.
+
+# Day 9
+
+I learned that rotation and reflection matrices are **orthogonal** furthermore;
+
+>$$ M \text{ is orthogonal } \iff M^T = M^{-1}$$
+
+That's means that i can use transpose operation instead of expensive inverse operation on my rotation matrices.
+
+some note from the book;
+>you will find that it is just about the same number of operations involved as converting the quaternion to the equivalent rotation matrix (by using Equation (8.20), which is developed in Section 8.7.3) and then multiplying the vector by this matrix. Because of this, we don’t consider quaternions to possess any direct ability to rotate vectors, at least for practical purposes in a computer.
+
+# Day 10
+
+I implemented Matrix functions, inertia tensor world space transformations. and i'm reading 3D Math Primer book.
+
+some notes from the book;
+
+>Now, typically in a physics simulation, you only need the inverse inertia tensor; similar to how you really only need to store the inverse mass, as opposed to the mass of a body. 
+
+> it’s common to keep on hand redundant copies of the orientation in alternate formats. Typically, both a quaternion and rotation matrix are maintained.
+
+# Day 11
+
+i implemented the general impulse formula but i realized that my program doesn't produce orientation from angular velocities even i saw with m own my eyes that bodies gain angular velocity from the impulse and as you know in previous tests initial angular velocity creates orientation seems normally.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/83AJu8NEU7I?si=Idbp6SQVEefJQhPo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 12
+After 3 hours of debugging i found that the problem emerges from the distinction of the following functions;
+
+> btw i hadn't trust the ai chatbots because claude did terrible job of identifying the issue and bringing math logic together.
+
+```c#
+	inline const Vec3& Vec3::Normalize() {
+		float mag = GetMagnitude();
+		float invMag = 1.0f / mag;
+		if (0.0f * invMag == 0.0f * invMag) {
+			x *= invMag;
+			y *= invMag;
+			z *= invMag;
+		}
+		return *this;
+	}
+
+	inline Vec3 Vec3::Normalized() const {
+		Vec3 copy = *this;
+		copy.Normalize();
+		return copy;
+	}
+```
+
+Because in body update i've been creating new axis by ```c# Vec3 axis = angularVelocity.Normalized();``` I wrote that function to avoid overriding the angular velocity, but apparently I shouldn't have.
+
+it solved the unrotation problem but another problem came to the vision that is sometimes my angular velocity in collision resolution being calculated as reversed for some reason. While trying to solve this issue i realized that my WorldSpaceToLocalSpace was wrong and local-world conversion were being miscalculated, i fixed it but this doesn't solve the problem.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/r4AtzRB4F-k?si=Q6q2aiVgVRxZFnGC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ruP4Xr2wRRE?si=Ibm-y1rXtX9Lvxfc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PEuliINzeIQ?si=C_0eVpJ_lVVAmj_q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vBgWe8blQwU?si=YVWupzXGsJzIfMVY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JawH91NVr3I?si=ndrjIdxKo3H95NqA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+a note for myself:
+
+> The broader principle: whenever you write a function and its inverse, test the round-trip immediately. WorldToLocal/LocalToWorld, serialize/deserialize, compress/decompress — these always come in pairs and the round-trip test is cheap to write and catches both wrong-order and wrong-reference bugs instantly.
+
+> // At startup, before any simulation runs:
+> Vec3 worldPoint = Vec3(1, 2, 3); // arbitrary
+> Vec3 local = body.WorldSpaceToLocalSpace(worldPoint);
+> Vec3 backToWorld = body.LocalSpaceToWorldSpace(local);
+> // backToWorld should equal worldPoint
+> assert((backToWorld - worldPoint).GetMagnitude() < 0.001f);
+
+> If that assertion fires, you know immediately that one of the two functions is broken, and you've isolated the problem to that pair before any rendering or physics runs.
+
+
+# Day 13
+
+Silly me...!!! past 3 days i've been trying to figuring out in fury why does my angular velocity being reversed in collision resolution. However i didn't even stopped and ask myself, wait a second there'snt any friction that can cause rotation or torque so why would my spheres should even rotate in the first place...
+
+Oh god... btw i changed my math classes with the oneweekendphysics book's because i was so angry that i thought maybe copying and pasting everything related with the math implementations can solve the issue and guess what it wasn't.
+
+So this showcased another problem that is why do my spheres rotate on collision when there is no friction at all?
+
+# Day 14
+
+It turns out the problem was in the impulse calculation,```C# Vec3 r = impulsePoint - position``` components of r [drifts](https://fabiensanglard.net/floating_point_visually_explained/) so r starts to become unparallel to the impulse point then this creates torque, then Vector::Normalize() normalizes angular velocity and overwrites it as (0,0,+-1) depending on the drift. So the sphere "sometimes" rotates in +z direction sometimes in -z direction. Yeah...
+
+After realizing that i stopped overwriting the angular velocity by Normalizing it and implemented tangential impulses for friction and for now i won't consider static frictions. I read this is more stable in impulse based physics engines.
+
+> Alessandro Di Gioia: as a software engineer our biggest most important responsibility is to understand the problem space and define it very well before we can even start thinking about the solution space.
+
+> Fred Brooks: “Show me your flow charts and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowcharts; they’ll be obvious.” to write or understand software, a good place to start is a description of the _**data**_ that are being operated on.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/G9gZuJqEu-Y?si=LMu1MX0YwCWVQZTB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
