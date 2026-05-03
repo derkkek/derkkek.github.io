@@ -420,3 +420,17 @@ After realizing that i stopped overwriting the angular velocity by Normalizing i
 > Fred Brooks: “Show me your flow charts and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowcharts; they’ll be obvious.” to write or understand software, a good place to start is a description of the _**data**_ that are being operated on.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/G9gZuJqEu-Y?si=LMu1MX0YwCWVQZTB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 15
+
+Started to research continuous collision detection.
+
+# Day 16
+
+Implemented my first continuous collision detection and it worked(seemingly)! But yeah, it wasn't a solid implementation in terms of arcihtecture and engineering.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/orO0Fy-ubUc?si=bnBnIxsyWl-xsKU0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 17 
+
+I'm studying the gamephysicsweekend's CCD implementation, it takes too much time to understand imo author don't give enough explanations about why, instead they give you code and explains how.  
