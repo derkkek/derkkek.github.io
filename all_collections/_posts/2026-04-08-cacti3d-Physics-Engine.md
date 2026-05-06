@@ -434,3 +434,52 @@ Implemented my first continuous collision detection and it worked(seemingly)! Bu
 # Day 17 
 
 I'm studying the gamephysicsweekend's CCD implementation, it takes too much time to understand imo author don't give enough explanations about why, instead they give you code and explains how.  
+
+# Day 18
+
+I studied implemented continous collision detection and time slicing but i hit a bottleneck issue.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/X49Uaq9piqU?si=TAqE2FQIdyIr0roa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+I profiled my code and realized that debug rendering and contact copying in the program was the bottleneck because of the size of the array and rendering calls.
+
+<img src="{{ '/assets/profile.jpg'}}">
+
+When i loop only happening collisions the problem solved or just simply cut it out.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bkKlasgkwKM?si=2l1cZtWDYI01iGlK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 19
+
+Here's my insights about some of my key foundings about CCD because studying it is hard maybe this can help someone;
+
+> - Ok so first don't forget that CCD is a collision detection problem not a collision resolution problem.
+>
+> - Somehow, you need to find a "time" within the discrete time steps where the collision is expected to occur.
+>
+> - To find such a time you cast something and intersect with something in sphere-sphere case it's a sphere.
+>
+> - However dynamic-dynamic sphere intersection tests is hard to solve.
+>
+> - So you make a simplification and decrease the problem into ray-sphere static intersection by calculating the relative velocity and assuming that sphere B is static and sphere A is just a point(ray) and by using Minkowski Sum you try to find an intersection of a ray and a sphere C that is as big as the sum of the radii of A and B.
+>
+> - But the math gives us parametric time results like t = 0 for ray origin and t=1 for the furthest ray distance point. Like if you shoot the ray from A to B then it's at A when t = 0 and at B at t = 1. If it's collide a sphere at some point in between it returns to us a t value in [0,1].
+>
+> - This is compeletely irrelevant for our physics engine because we need exact time not some ratio to calculate exact collision points and also sorting the collisions by their time otherwise we could resolve collisions in wrong order and we can observe ghost collisions or unexpected collisions.
+>
+> - So we scale the t1 and t2 result of the intersection test by dt.
+
+###### Okay we found the collision times in two seperate frames now what? How do we manage this fragmented situation?
+
+> We do time slicing!
+> - We're in a frame.
+> - As usual apply forces or impulses.
+> - Test contacts. (we know until this point)
+> - Now, we need an contact array to sort the contacts. So add found contacts to this array from the previous step.
+> - Sort contacts.
+> - Here's the hard part: We have some contacts and their times that would happen before the next frame but not in this frame that we need to handle.
+> - start a stopwatch.
+> - So for each contact integrate all of the bodies to that "contact time" and resolve only the current contact. Add the passed time to the stopwatch.
+> - if the remaining time(dt - stopwatch time) is bigger than 0 then update all of the bodies by the remaining time. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_vehGcdOOGw?si=rsvX-3MeFy7uMAGf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
