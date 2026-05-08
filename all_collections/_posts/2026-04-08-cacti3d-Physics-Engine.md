@@ -501,25 +501,45 @@ It works good but keep in mind that also generates false positives.
 ###### Here's the results.
 
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7763
+>
 > Found Contacts Count: 197
+>
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7758
+>
 > Found Contacts Count: 209
+>
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7746
+>
 > Found Contacts Count: 241
+>
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7746
+>
 > Found Contacts Count: 265
+>
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7742
+>
 > Found Contacts Count: 243
+>
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7723
+>
 > Found Contacts Count: 247
+>
 > Brute Force Test Count: 195625
+>
 > Collision Pairs Count: 7710
+>
 > Found Contacts Count: 220
 
 > Approximately %96 narrowing. When world is sparse it narrows approx. &98.
