@@ -483,3 +483,47 @@ Here's my insights about some of my key foundings about CCD because studying it 
 > - if the remaining time(dt - stopwatch time) is bigger than 0 then update all of the bodies by the remaining time. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_vehGcdOOGw?si=rsvX-3MeFy7uMAGf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 20
+
+Implemented Sweep And Prune broadphase collision detection with AABBs but it didn't worked out properly. It's narrowing absolutely nothing.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nbeETlDGxTA?si=BzgZq2dE4bV7Fu7M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 21
+
+I debugged and realized that since i'm keeping everything static in the broadphase class and not calling the constructor -that is where i initialize my projection axis- my projection axis was automatically being initialized as Vec3(0,0,0). After fixing it and changing the class from static to normal my implementation starts to narrow collision candidates.  
+
+Also when i tried to render AABBs i realized that i wasn't calling the AABB update function so after initialization those became stale.
+
+It works good but keep in mind that also generates false positives.
+
+###### Here's the results.
+
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7763
+> Found Contacts Count: 197
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7758
+> Found Contacts Count: 209
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7746
+> Found Contacts Count: 241
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7746
+> Found Contacts Count: 265
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7742
+> Found Contacts Count: 243
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7723
+> Found Contacts Count: 247
+> Brute Force Test Count: 195625
+> Collision Pairs Count: 7710
+> Found Contacts Count: 220
+
+> Approximately %96 narrowing. When world is sparse it narrows approx. &98.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BCtJMIJhiIs?si=-gc1aTTdtMNa4PL1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+You can observe that when objects are close to each other it doesn't really improve the performance but after the first change it greatly narrows the collision tests.  
