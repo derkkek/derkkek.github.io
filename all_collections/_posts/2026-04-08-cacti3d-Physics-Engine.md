@@ -526,6 +526,8 @@ It works good but keep in mind that also generates false positives.
 
 > Approximately %96 narrowing. When world is sparse it narrows approx. by %98.
 
+Still it's not perfect and generates lots of false positives but imo it's decent enough for learning phase. 
+
 
 > std::cout << "Brute Force Test Count: " << (numBodies * (numBodies - 1)) / 2 << "\n";
 >
@@ -535,4 +537,20 @@ It works good but keep in mind that also generates false positives.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BCtJMIJhiIs?si=-gc1aTTdtMNa4PL1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-You can observe that when objects are close to each other it doesn't really improve the performance but after the first change it greatly narrows the collision tests.  
+You can observe that when objects are close to each other it doesn't really improve the performance but after the first change it greatly narrows the collision tests.
+
+# Day 22
+
+One final thing for moving from the broad phase, that is i had to consider velocities of bodies and need to expand AABBs with respect to the velocities of the objects.
+
+If you don't then broadphase couldn't be able to catch collisions between fast moving objects because of AABBs only provide data about their "current" positions so that it can also tunnel objects. 
+
+<img src="{{ '/assets/aabb_expansion.svg'}}">
+
+Here's the step by step visualization.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LQ19POIVGek?si=oXVMRNPUteyqiKUq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+And Here's the collision detection. Since the velocity is so high i couldn't be able to see it's path.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/294qL8q4Y6E?si=DfSilKolG1Av1ZvZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
