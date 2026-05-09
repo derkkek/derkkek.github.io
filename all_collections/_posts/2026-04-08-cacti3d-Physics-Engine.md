@@ -500,6 +500,12 @@ It works good but keep in mind that also generates false positives.
 
 ###### Here's some results for 626 bodies.
 
+>std::cout << "Brute Force Test Count: " << (numBodies * (numBodies - 1)) / 2 << "\n";
+>
+> std::cout << "Collision Pairs Count: " << collisionPairs.size() << "\n";
+>
+> std::cout << "Found Contacts Count: " << numContacts << "\n";
+
 > Brute Force Test Count: 195625
 >
 > Collision Pairs Count: 7746
