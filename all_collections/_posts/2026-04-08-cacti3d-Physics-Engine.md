@@ -500,12 +500,6 @@ It works good but keep in mind that also generates false positives.
 
 ###### Here's some results for 626 bodies.
 
->std::cout << "Brute Force Test Count: " << (numBodies * (numBodies - 1)) / 2 << "\n";
->
-> std::cout << "Collision Pairs Count: " << collisionPairs.size() << "\n";
->
-> std::cout << "Found Contacts Count: " << numContacts << "\n";
-
 > Brute Force Test Count: 195625
 >
 > Collision Pairs Count: 7746
@@ -531,6 +525,13 @@ It works good but keep in mind that also generates false positives.
 > Found Contacts Count: 220
 
 > Approximately %96 narrowing. When world is sparse it narrows approx. by %98.
+
+
+> std::cout << "Brute Force Test Count: " << (numBodies * (numBodies - 1)) / 2 << "\n";
+>
+> std::cout << "Collision Pairs Count: " << collisionPairs.size() << "\n";
+>
+> std::cout << "Found Contacts Count: " << numContacts << "\n";
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BCtJMIJhiIs?si=-gc1aTTdtMNa4PL1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
