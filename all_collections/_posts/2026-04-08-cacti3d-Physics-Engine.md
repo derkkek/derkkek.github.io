@@ -498,26 +498,8 @@ Also when i tried to render AABBs i realized that i wasn't calling the AABB upda
 
 It works good but keep in mind that also generates false positives.
 
-###### Here's the results.
+###### Here's some results for 626 bodies.
 
-> Brute Force Test Count: 195625
->
-> Collision Pairs Count: 7763
->
-> Found Contacts Count: 197
->
-> Brute Force Test Count: 195625
->
-> Collision Pairs Count: 7758
->
-> Found Contacts Count: 209
->
-> Brute Force Test Count: 195625
->
-> Collision Pairs Count: 7746
->
-> Found Contacts Count: 241
->
 > Brute Force Test Count: 195625
 >
 > Collision Pairs Count: 7746
