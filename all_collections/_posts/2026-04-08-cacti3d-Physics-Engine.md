@@ -554,3 +554,23 @@ Here's the step by step visualization.
 And Here's the collision detection. Since the velocity is so high i couldn't be able to see it's path.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/294qL8q4Y6E?si=DfSilKolG1Av1ZvZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# Day 23
+
+I implemented Box shape class and box builder function for raylib and rendered it.
+
+When i tried to apply gravity impulse to my box it starts to rotate back and forth
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8WBz3uYz8gM?si=uIMW0HPnYxDSed3M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+After some debugging, i realized that my body update function actually never been transforming inertia tensor from local space to world space. after correctly transforming it seemed like ok but...(?)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FIhcClkNdos?si=mc7RSWs6I3OiXrqq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Box started to incline towards it's some vertices without an external force except gravity. For a few hours i thought it's another floating point drift problem that causes rotation and tried to stop normalizing rotation axis and stuff but when i tried to give an initial angular velocity in x direction the problem appeared instantly.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FIhcClkNdos?si=Gu_foUkghGPTmxqv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+I knew that rotation should be happen around the rotation axis which passes through the "center of mass" of an object but clearly rotation is around some vertices so the problem was my misscalculation of the center of mass of  boxes. For primitive types like spheres and boxes center of mass is (0,0,0) at least in physics engines, if you forget that like me then you're in a big trouble because everything works around this assumption.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gOSXIfk-k24?si=4c9Qwx2ynYO9bgvh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
